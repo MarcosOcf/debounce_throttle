@@ -1,0 +1,38 @@
+body{
+  background: #E6E6E6;
+}
+
+.box{
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -300px;
+  width: 600px;
+  height: 300px;
+  position: absolute;
+}
+
+.debounce{
+  background: #777;
+  width: 200px;
+  height: 300px;
+}
+
+.throttle{
+  background: #777;
+  width: 200px;
+  height: 300px;
+  margin-left: 400px; 
+  margin-top: -300px;
+}
+
+.movement{
+  margin: 0;
+  margin-left: 10px;
+  color: red;
+  width: 500px;
+  height: 120px;
+  padding-top: 70px;
+  float: left;
+  font-size: 14px;
+}

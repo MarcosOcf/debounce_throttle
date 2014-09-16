@@ -1,0 +1,35 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>mousemove demo</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="reset.css">
+  <link rel="stylesheet" type="text/css" href="page.css">
+</head>
+<body>
+ 
+  <p class= "movement">
+    <span class= "x">Move the mouse over the div.</span>
+    <span class= "y">&nbsp;</span>
+  </p>
+  
+  <div class= "box">
+    <div class="debounce">
+      <p>Debounce</p>
+      <p> last-position
+        <span class= "debounce"></span>
+      </p>
+    </div>
+
+    <div class="throttle">
+      <p>Throttle</p>
+      <p> last-position
+        <span class= "throttle"></span>
+      </p>
+    </div>
+  </div>
+
+  <script src= "page.js"></script>
+   
+</body>
+</html>
