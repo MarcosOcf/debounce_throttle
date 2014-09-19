@@ -2,34 +2,48 @@
 <head>
   <meta charset="utf-8">
   <title>mousemove demo</title>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  
   <link rel="stylesheet" type="text/css" href="reset.css">
   <link rel="stylesheet" type="text/css" href="page.css">
 </head>
 <body>
- 
-  <p class= "movement">
-    <span class= "x">Move the mouse over the div.</span>
-    <span class= "y">&nbsp;</span>
-  </p>
-  
+
   <div class= "box">
-    <div class="debounce">
-      <p>Debounce</p>
-      <p> last-position
-        <span class= "debounce"></span>
-      </p>
+    
+    <div class= "no-filter">
+      <div class= "title">
+        <span> No-Filter </span>
+        <span class= "no-filter-span"></span>
+      </div>
+    </div>
+    
+    <div class= "no-filter-results">  
     </div>
 
-    <div class="throttle">
-      <p>Throttle</p>
-      <p> last-position
-        <span class= "throttle"></span>
-      </p>
+    <div class= "debounce">
+      <div class= "title">
+        <span> Debounce </span>
+        <span class= "debounce-span"></span>
+      </div>
     </div>
+    
+    <div class= "debounce-results">
+    </div>
+
+    <div class= "throttle">
+      <div class= "title">
+        <span> Throttle </span>
+        <span class= "throttle-span"></span>
+      </div>
+      
+    </div>
+
+    <div class="throttle-results">
+    </div>  
+
   </div>
 
+  <script src="jquery.min.js"></script>
   <script src= "page.js"></script>
-   
 </body>
 </html>

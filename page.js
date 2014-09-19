@@ -1,99 +1,123 @@
-$( "body" ).mousemove(function(event) {
-  $("body").trigger("meumousemove.event", [event]);
+///////////////////////////Event Type///////////////////////
+
+$("body").mousemove(function(event) {
+  $("body").trigger("mousemovetrigger.event", [event]);
 });
 
-function debounce(event, callback) {
-  var self = this;
-  clearTimeout(this.timeout);
-  this.event = event;
-  this.timeout = setTimeout(function(){
-    callback(event);
-  }, 500);
-}
+/////////////////////////// Engine /////////////////////////
 
-function compareEventsPosition (firstEvent, secondEvent) {
-  if (firstEvent.pageX == secondEvent.pageX && firstEvent.pageY == secondEvent.pageY){
-    
-    return true;
-  } else {
-    return false;
+var Engines = {
+
+  noFilter: function(event, opts) {
+    opts.callback(event);
+  },
+
+  debounce: function(event, opts) {
+    clearTimeout(this.timeoutCall);
+    this.timeoutCall = setTimeout(function(){
+      opts.callback(event);
+    }, opts.timeout);
+  },
+
+  throttle: function(event, opts) {
+    if (this.lastEvent === undefined) {
+      this.lastEvent = event;
+      return;
+    }
+    if (event.timeStamp - this.lastEvent.timeStamp > opts.timeout) {
+      opts.callback(event);
+      this.lastEvent = event;  
+    } else {
+      Engines.debounce(event, opts);
+    }  
   }
 }
 
+////////////////////////////  UI  ///////////////////////////
 
-function sleep(delay) {
-  var start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
+window.UI = function(opts) {
+  this.opts = opts;
 }
-
-window.UI = function(engine, container) {
-  this.engine = engine;
-  this.container = container;
-  this.context = $("body");
-}
-
 
 UI.prototype = {
-  listenerEventName: "meumousemove.event",
 
   startDraw: function() {
     var self = this;
-    this.context.on(this.listenerEventName, function(e, event) {
-      
+    this.opts.context.on(this.opts.eventName, function(e, event) {
       self.process(event);
     });
   },
 
   stopDraw: function() {
-    this.context.off(this.listenerEventName);
+    this.opts.context.off(this.opts.eventName);
   },
 
   process: function(event) {
     var self = this;
-    this.engine(event, function(event) {
-      console.log('blah');
-      // self.container.text("x = " + event.pageX + " y = " + event.pageY)
+    var engineOpts = ({
+      callback: this.opts.callback,
+      timeout: this.opts.timeout
     });
+    
+    this.opts.engine(event, engineOpts);
   }
 }
 
-function main() {
+//////////////////////////// function callbck /////////////////////////////
 
-  var ui2 = new UI(debounce,$("span.debounce"));
-  ui2.startDraw();
-
-  // var ui1 = new UI(throttle, $("span.throttle"));
-  // ui1.startDraw();
-
+function animateNoFilter(event) {
+  $("div.no-filter-results").append($("<span></span>", {"class": "success"}));
+  setTimeout(function(){
+    $("div.throttle-results").append($("<span></span>", {"class": "throttle-failure"}));
+    $("div.debounce-results").append($("<span></span>", {"class": "debounce-failure"}));  
+  }, 50);
+  setScrollOverflowSize();
 }
+
+function setScrollOverflowSize(){
+  $("div.no-filter-results").scrollTop(99999);
+  $("div.throttle-results").scrollTop(99999);
+  $("div.debounce-results").scrollTop(99999);
+}
+
+function animateThrottle(event) {
+  $("div.throttle-results span").last().remove();
+  $("div.throttle-results").append($("<span></span>", {"class": "success"}));
+}  
+
+function animateDebounce(event) {
+  $("span.debounce-failure").last().remove();
+  $("div.debounce-results").append($("<span></span>", {"class": "success"}));    
+}
+///////////////////////////// main code ///////////////////////
 
 $(function() {
-  main();  
+
+  var ui1 = new UI({
+    engine: Engines.throttle,
+    eventName: "mousemovetrigger.event",
+    callback: animateThrottle,
+    context: $("body"),
+    timeout: 100
+  });
+  
+ var ui2 = new UI({
+    engine: Engines.debounce,
+    eventName: "mousemovetrigger.event",
+    callback: animateDebounce,
+    context: $("body"),
+    timeout: 200
+  });
+
+ var ui3 = new UI({
+    engine: Engines.noFilter,
+    eventName: "mousemovetrigger.event",
+    callback: animateNoFilter,
+    context: $("body")
+ })
+
+  ui1.startDraw();
+  ui2.startDraw();
+  ui3.startDraw();
+
 });
-
-
-
-
-function throttle(event, render) {
-  if (this.firstEvent === undefined) {
-    this.firstEvent = event;
-    return;
-  }
-
-  if (this.firstEvent.pageX == event.pageX && this.firstEvent.pageY == event.pageY) {
-
-    render(event);
-    
-  }else{
-
-  }
-
-  return
-}
-
-
-
-
-
-
-
